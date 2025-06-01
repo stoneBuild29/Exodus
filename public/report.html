@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>AI Report Card</title>
+  <style>
+    body {
+      margin: 0;
+      background: rgba(10, 15, 45, 0.9);
+      font-family: 'Segoe UI', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .card {
+      background: radial-gradient(#0a0f2d, #000);
+      color: #d0eaff;
+      border-radius: 16px;
+      padding: 40px;
+      max-width: 900px;
+      width: 90%;
+      box-shadow: 0 0 30px rgba(80, 200, 255, 0.4);
+      position: relative;
+    }
+    .close-btn {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      background: transparent;
+      border: 2px solid #8ed1ff;
+      color: #8ed1ff;
+      padding: 6px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .close-btn:hover {
+      background: #8ed1ff;
+      color: #0a0f2d;
+    }
+    h2 {
+      text-align: center;
+      font-size: 26px;
+      margin-bottom: 30px;
+      opacity: 0;
+      animation: fadeIn 0.5s ease forwards;
+      animation-delay: 0.2s;
+    }
+    .flow-chart {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
+      flex-wrap: nowrap;
+      margin-bottom: 40px;
+      opacity: 0;
+      animation: fadeIn 0.5s ease forwards;
+      animation-delay: 0.8s;
+    }
+    .flow-box {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 16px 24px;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(80, 200, 255, 0.5);
+      min-width: 180px;
+      text-align: center;
+      font-size: 16px;
+    }
+    .arrow {
+      font-size: 20px;
+      color: #00e0ff;
+    }
+    .analysis-box, .caution-box {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 20px;
+      opacity: 0;
+      animation: fadeIn 0.5s ease forwards;
+    }
+    .analysis-box {
+      animation-delay: 1.6s;
+    }
+    .caution-box {
+      animation-delay: 2.2s;
+    }
+    .analysis-box h3, .caution-box h3 {
+      color: #8ed1ff;
+      margin-top: 0;
+    }
+    .analysis-box p, .caution-box p {
+      font-size: 15px;
+      line-height: 1.6;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+  <script>
+    function closeCard() {
+      window.location.href = "health.html";
+    }
+  </script>
+</head>
+<body>
+  <div class="card">
+    <button class="close-btn" onclick="closeCard()">Close</button>
+    <h2>AI Diagnostic Flow</h2>
+    <div class="flow-chart">
+      <div class="flow-box">Input: Fall Event, HR: 162 bpm, BP: 185/102, Family: Aneurysm</div>
+      <div class="arrow">➡</div>
+      <div class="flow-box">AI Inference: Aortic Dissection Pattern, ER Model Triggered</div>
+      <div class="arrow">➡</div>
+      <div class="flow-box">Recommendation: CT Angiography & Surgical Team Alert</div>
+    </div>
+    <div class="analysis-box">
+      <h3>AI Analysis </h3>
+      <p id="ai-output">
+        Based on elevated heart rate, hypertensive crisis, and trauma event during horse riding, the AI system matched acute aortic dissection signals. Emergency imaging and surgical readiness are advised. The mortality risk increases rapidly over time, requiring action within a critical window.
+      </p>      
+    </div>
+    <script>
+      document.addEventListener("DOMContentLoaded", async () => {
+    
+        const response = await fetch("https://deepseek-proxy-bapo.onrender.com/api/deepseek", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            messages: [
+              {
+                role: "system",
+                content:
+                  "You are a concise and careful medical assistant AI. Based on the user's input (such as symptoms, measurements, or medical keywords), give a brief clinical suggestion or risk assessment (max 100 words). Do not give a diagnosis."
+              },
+              {
+                role: "user",
+                content: caseInput
+              }
+            ]
+          })
+        });
+    
+        const data = await response.json();
+        const output = data.choices?.[0]?.message?.content || "❌ Failed to get AI response.";
+        document.getElementById("ai-output").textContent = output;
+      });
+    </script>
+    
+    <div class="caution-box">
+      <h3>Caution: Clinical Judgment Required</h3>
+      <p>
+        This AI-generated recommendation is for informational purposes only and must not replace clinical decision-making. All diagnoses and treatment plans should be validated by licensed medical professionals considering patient-specific context, history, and co-morbidities.
+      </p>
+    </div>
+  </div>
+</body>
+</html>

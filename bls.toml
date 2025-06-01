@@ -1,0 +1,33 @@
+name = "template_name"
+version = "1.0.0"
+type = "text"
+production_host = "blue-caribou-kelsey-5edrnlbe.bls.dev"
+
+[deployment]
+permissions = [ "https://openai-proxy-bapo.onrender.com" ]
+nodes = 1
+permission = "public"
+
+[features]
+wasm = true
+fetch = true
+
+[build]
+dir = "build"
+entry = "template_name_debug.wasm"
+command = "npm run build:debug"
+
+[build_release]
+dir = "build"
+entry = "template_name.wasm"
+command = "npm run build:release"
+
+[[deployments]]
+name = "blessnet"
+description = ""
+cid = "bafybeibaugbqhdnhztfanj6jeck5eyaw3i5cggflvmo6aqa6ufkpmffcfu"
+created = "2025-06-01T15:56:17.627Z"
+
+  [deployments.runtime]
+  url = "blessnet.tar.gz"
+  checksum = "9962e6cc835e30c55945c1d2a6ee2e8601bf99adb54b2ecd7c3c8afdd68ff94b"

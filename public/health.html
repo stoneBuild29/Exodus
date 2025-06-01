@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Exodus</title>
+  <style>
+    
+    body {
+      margin: 0;
+      background: #0a101e;
+      font-family: 'Inter', sans-serif;
+      color: #d7eaff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 20px;
+
+      min-height: 100vh;     /* ⬅️ 新增 */
+      overflow-y: auto;      /* ⬅️ 新增 */
+    }
+
+    .overview-wrapper {
+      position: relative;
+      width: 100%;
+      max-width: 1200px;
+      min-height: calc(100vh - 80px);;
+      margin-top: 40px;
+    }
+
+    .animated-circle-wrapper {
+      position: absolute;
+      top: 45%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 240px;
+      height: 240px;
+      z-index: 2;
+    }
+
+    .ripple {
+      position: absolute;
+      border: 2px dashed rgba(122, 220, 255, 0.3);
+      border-radius: 50%;
+      animation: ripple-wave 2.4s infinite;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+    }
+
+    .ripple.high-risk {
+      border-color: rgba(255, 80, 80, 0.5);
+      animation: ripple-wave-fast 1.2s infinite;
+    }
+
+
+@keyframes ripple-wave-fast {
+  0% { transform: scale(0.8); opacity: 1; }
+  100% { transform: scale(2.2); opacity: 0; }
+}
+
+    .ripple:nth-child(2) { animation-delay: 0.8s; }
+    .ripple:nth-child(3) { animation-delay: 1.6s; }
+
+    .center-core {
+      position: absolute;
+      width: 160px;
+      height: 160px;
+      top: 40px;
+      left: 40px;
+      background: radial-gradient(circle at center, #2c3e50, #1a2533);
+      border-radius: 50%;
+      box-shadow: 0 0 20px rgba(122, 220, 255, 0.2);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 10px;
+      text-align: center;
+    }
+
+    .center-core.high-risk {
+      background: radial-gradient(circle at center, #4b0000, #1a0000);
+       box-shadow: 0 0 25px rgba(255, 80, 80, 0.5);
+    }
+
+    @keyframes ripple-wave {
+      0% { transform: scale(0.8); opacity: 1; }
+      100% { transform: scale(2.2); opacity: 0; }
+    }
+
+        /* 波纹状态变红 & 动画加速 */
+    .ripple.high-risk {
+      border-color: rgba(255, 80, 80, 0.5);
+      animation: ripple-wave-fast 1.2s infinite;
+    }
+
+    @keyframes ripple-wave-fast {
+      0% { transform: scale(0.8); opacity: 1; }
+      100% { transform: scale(2.2); opacity: 0; }
+    }
+
+    /* 中心圆高风险视觉变红 */
+    .center-core.high-risk {
+      background: radial-gradient(circle at center, #4b0000, #1a0000);
+      box-shadow: 0 0 25px rgba(255, 80, 80, 0.5);
+      transition: all 0.4s ease;
+    }
+
+
+    .summary-text {
+      position: absolute;
+      top: calc(35% + 310px);
+      left: 50%; /* ✅ 向右偏移 2% */
+      transform: translateX(-50%);
+      text-align: center;
+      z-index: 3;
+    }
+
+    .summary-text h3 {
+      font-size: 24px;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: #ffffff;
+    }
+
+    .summary-text p {
+      margin: 4px 0;
+      font-size: 16px;
+      color: #aac4e8;
+      font-family: 'Courier New', monospace;
+    }
+
+    .button {
+      margin-top: 16px;
+      padding: 12px 24px;
+      border: 1px solid #88aacc;
+      background: transparent;
+      color: #88aacc;
+      font-size: 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .button:hover {
+      background: rgba(120, 180, 255, 0.1);
+    }
+
+    .module {
+      position: absolute;
+      width: 220px;
+      padding: 16px 20px;
+      text-align: center;
+      background: rgba(25, 35, 55, 0.9);
+      border: 1px solid rgba(150, 210, 255, 0.2);
+      border-radius: 16px;
+      color: #e0f2ff;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 14px;
+      box-shadow: 0 0 20px rgba(122, 200, 255, 0.1);
+      backdrop-filter: blur(5px);
+      line-height: 1.6;
+      z-index: 3;
+    }
+
+    .connector-line {
+      position: absolute;
+      width: 2px;
+      background: rgba(122, 220, 255, 0.6);
+      animation: pulse-line 2s infinite;
+      z-index: 1;
+    }
+
+    @keyframes pulse-line {
+      0%, 100% { opacity: 0.2; }
+      50% { opacity: 1; }
+    }
+
+    .module.line-top        { top: 4%;  left: 50%; transform: translateX(-50%); }
+    .module.line-topleft    { top: 16%; left: 10%; }
+    .module.line-topright   { top: 16%; right: 10%; }
+    .module.line-left       { top: 50%; left: 0; transform: translateY(-50%); }
+    .module.line-right      { top: 50%; right: 0; transform: translateY(-50%); }
+
+    .connector-line.top {
+      top: 14%; left: 50%; transform: translateX(-50%); height: 100px; }
+    .connector-line.topleft {
+      top: 27%; left: 21%; height: 130px; transform: rotate(-40deg); transform-origin: top left; }
+    .connector-line.topright {
+      top: 27%; right: 21%; height: 130px; transform: rotate(40deg); transform-origin: top right; }
+    .connector-line.left {
+      top: 50%; left: 190px; width: 160px; height: 2px; transform: translateY(-50%); }
+    .connector-line.right {
+      top: 50%; right: 190px; width: 160px; height: 2px; transform: translateY(-50%); }
+  </style>
+</head>
+<body>
+  <div class="overview-wrapper">
+    <div class="animated-circle-wrapper">
+      <div class="ripple"></div>
+      <div class="ripple"></div>
+      <div class="ripple"></div>
+    
+      <div class="center-core">
+        <div id="statusText" class="status-text" style="font-size: 14px; text-align: center; color: #d7eaff; line-height: 1.5;">
+          Current Status: Normal Monitoring
+        </div>
+        <div id="heartRate" style="font-size: 13px; margin-top: 4px;">Heart Rate: -- BPM</div>
+        <div id="stillHours" style="font-size: 13px;">Still for: -- hours</div>
+      
+        <button id="triggerButton" class="button" style="margin-top: 6px; font-size: 12px; padding: 6px 10px;" onclick="triggerHighRisk()">Trigger High Risk</button>
+        <a id="willButton" href="will.html" class="button" style="display:none; margin-top: 6px; font-size: 12px; padding: 6px 10px; background-color:#f87171; color:white;">Proceed to Will</a>
+      </div>
+      
+    </div>
+    
+
+    <div class="connector-line top"></div>
+    <div class="connector-line topleft"></div>
+    <div class="connector-line topright"></div>
+    <div class="connector-line left"></div>
+    <div class="connector-line right"></div>
+
+    <div class="summary-text">
+      <h3>Vivien Leigh</h3>
+      <p>Age: 71 · Condition: Stable</p>
+      <p>Injection: Semaglutide (0.25 mg weekly)</p>
+      <p>Last Test: Moderate Risk</p>
+      <p>Weight: 71kg (stable)</p>
+      <button class="button" onclick="location.href='report.html'">View AI Report</button>
+    </div>
+
+
+    <div class="module line-top">
+      IoT Signal: Synced<br>
+      Uplink Time: 5m ago
+    </div>
+    <div class="module line-topleft">
+      Home Status: Calm<br>
+      No movement detected in last 2h
+    </div>
+    <div class="module line-topright">
+      Fall Sensor: Danger<br>
+      Fall Event reported in 24h
+    </div>
+    <div class="module line-left">
+      Family History:<br>
+      • Diabetes · Hypertension
+      • Mild Cognitive Decline (father)
+    </div>
+    <div class="module line-right">
+      BLE Connection: OK<br>
+      3 paired devices connected
+    </div>
+  </div>
+  
+  
+  <script>
+    let currentStatus = "normal_monitoring";
+  
+    function simulateVitals() {
+      const heartRate = Math.floor(80 + Math.random() * 120);
+      const stillHours = Math.floor(Math.random() * 8);
+      return { heartRate, stillHours };
+    }
+  
+    function updateStatus(vitals) {
+      const { heartRate, stillHours } = vitals;
+      let status = "normal_monitoring";
+  
+      if (heartRate > 180 && stillHours > 6) {
+        status = "death_risk_high";
+      } else if (heartRate > 150 || stillHours > 4) {
+        status = "elevated_risk";
+      }
+  
+      renderStatus(status, heartRate, stillHours);
+    }
+  
+    function renderStatus(status, heartRate, stillHours) {
+      currentStatus = status;
+
+      //
+      const savedStatus = localStorage.getItem("status");
+      if (savedStatus === "deceased") {
+        // 避免被 simulateVitals 覆盖
+        document.getElementById("statusText").innerHTML = `<span class="highlight">Goodbye</span>`;
+        document.getElementById("heartRate").textContent = `Heart Rate: 0 BPM`;
+        document.getElementById("stillHours").textContent = `Still for: ∞ hours`;
+        document.getElementById("willButton").style.display = "none";
+        
+        
+      // }
+      // ✅ 页面加载一次后自动清除死亡标志，避免刷新时再次触发
+    setTimeout(() => {
+      localStorage.removeItem("status");
+      localStorage.removeItem("heartRate");
+      localStorage.removeItem("stillHours");
+      localStorage.removeItem("vitalText");
+    }, 1000);
+  } else {
+    vitalInterval = setInterval(() => {
+      const mockVitals = simulateVitals();
+      updateStatus(mockVitals);
+    }, 5000);
+  }
+      //
+
+      const statusText = document.getElementById("statusText");
+      const hrEl = document.getElementById("heartRate");
+      const shEl = document.getElementById("stillHours");
+      const center = document.querySelector(".center-core");
+      const ripples = document.querySelectorAll(".ripple");
+      const willBtn = document.getElementById("willButton");
+      const triggerBtn = document.getElementById("triggerButton");
+
+
+      // 清除高风险状态
+      center.classList.remove("high-risk");
+      ripples.forEach(r => r.classList.remove("high-risk"));
+
+  
+      hrEl.textContent = `Heart Rate: 200 BPM`;
+      shEl.textContent = `Blood Pressure: 192/108 mmHg`;
+  
+      if (status === "death_risk_high") {
+        statusText.innerHTML = `<span style="color:#f87171; font-weight:bold;">High Risk of Death Detected</span><br><small>Proceed to will creation</small>`;
+        center.classList.add("high-risk");
+        ripples.forEach(r => r.classList.add("high-risk"));
+
+        willBtn.style.display = "inline-block";
+        triggerBtn.style.display = "none";
+      } else {
+        willBtn.style.display = "none";
+        triggerBtn.style.display = "inline-block";
+      }
+
+    }
+  
+    function triggerHighRisk() {
+      const mock = { heartRate: 200, stillHours: 7 };
+      updateStatus(mock);
+    }
+  </script>
+</body>
+</html>
