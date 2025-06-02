@@ -31,8 +31,6 @@ Construct an extensible pipeline (InferencePipeline), where each stage processes
 **Result Aggregation:**
 Aggregate the outputs from all stages to generate a final risk assessment and survival probability tailored to the patient.
 
----
-
 ### 3. Events Execution Chain
 
 **Will Registration**
@@ -43,8 +41,6 @@ An AI-BOT continuously monitors the patient's medical records and device activit
 
 **Will Execution**
 Once confirmed, the AI-BOT triggers the smart contract. The encrypted will is released via IPFS, and beneficiaries can decrypt it with their private keys.
-
----
 
 ### 4. Decentralized Blockchain (NakamotoChain)
 
