@@ -63,13 +63,13 @@ This ensures that once a death is confirmed and will is released, all data is im
 
 ## Working Flow
 
-1. **Smart Monitor & Data Collection** → via Bless endpoints
+1. **Smart Monitor & Data Collection** → via Bless endpoints.
    Different kinds of personal health data will be collected. The data includes the following aspects: real-time data from smart smart wearable Devices, family pedigree and medical history, monitoring data during medical care and etc. All this will make up a clear personal health images
-2. **PatientCluster Formation** → personal + analogical data
+2. **PatientCluster Formation** → personal + analogical data.
    Data Center of institutions and schools will deploye endpoints on **BLESS NETWORK**. From the specific permissions, relevant data and available data could be fetched and used. The standard is dynamically changing, for example, the group born in the same age, the specific one live from the same disease and so on. The acquired data will be gather into a PatientCluster around on the real circumstance of the patient.
-3. **AI Inference** → modular risk and survival analysis
-    In the InferencePipeline, health data from the user's PatientCluster is analyzed across key factors such as genetics, lifestyle, and population models. Each factor is processed independently with adaptive weights based on real-time data and historical patterns. Partial results are then aggregated to produce personalized survival probabilities and risk assessments.
-4. **Event Monitoring** → AI-BOT tracks health status
-    Once a predefined health event (such as high risk event) is detected, the Proceed of Will is activated. Users' wills are pre-registered via smart contracts and stored on IPFS. Death is confirmed by an AI-BOT through multi-source validation — including hospital records, IoT inactivity, and family confirmation.Upon confirmation, the smart contract is triggered.
-5. **Smart Contract Execution** → will is distributed via blockchain
-     The encrypted will is retrieved and made accessible to authorized beneficiaries using private keys. This ensures secure, decentralized, and tamper-proof post-life asset execution.
+3. **AI Inference** → modular risk and survival analysis.
+   In the InferencePipeline, health data from the user's PatientCluster is analyzed across key factors such as genetics, lifestyle, and population models. Each factor is processed independently with adaptive weights based on real-time data and historical patterns. Partial results are then aggregated to produce personalized survival probabilities and risk assessments.
+4. **Event Monitoring** → AI-BOT tracks health status.
+   Once a predefined health event (such as high risk event) is detected, the Proceed of Will Creation is activated. Users' wills are pre-registered via smart contracts and stored on IPFS. Death is confirmed by an AI-BOT through multi-source validation — including hospital records, IoT inactivity, and family confirmation.Upon confirmation, the smart contract is triggered.
+5. **Smart Contract Execution** → will is distributed via blockchain.
+   The encrypted will is retrieved and made accessible to authorized beneficiaries using private keys. This ensures secure, decentralized, and tamper-proof post-life asset execution.
